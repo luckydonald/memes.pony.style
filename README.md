@@ -1,15 +1,11 @@
-================
-MyLittleFaceWhen
-================
-
+# MyLittleFaceWhen
 MyLittleFaceWhen is a simple image sharing web-application. It contains a 
 backend with rest api interface and a javascript frontend. Developed for fun
 and learning.
 
 Used to power http://mylittlefacewhen.com/
 
-Technologies
-============
+## Technologies
 List of most important packages that are used.
 
 - django
@@ -23,27 +19,19 @@ List of most important packages that are used.
 - CoffeeScript
 - sass
 
+## Requirements
 
-Requirements
-============
+### Backend
+See [requirements.txt](requirements.txt)
 
-Backend
--------
-See requirements.txt
-
-
-Frontend
---------
+### Frontend
 
 - CoffeeScript - http://coffeescript.org/
 - sass - http://sass-lang.com/
 
+## Contents
 
-========
-Contents
-========
-
-/scrpits/
+/scripts/
             Contains some script that have been used during development or
             for maintanence. Some aren't too relevant but are stored as a
             reference if their functionality is needed in the future.
