@@ -1,0 +1,56 @@
+{% load static %}{% load mustache %}{% get_static_prefix as static %}<!DOCTYPE html>
+<html lang="en" {% if not_firefox and not debug %}manifest="{{ static }}dictionary.appcache"{% endif %}>
+    <head>{% mustache "meta.mustache" metadata %}
+<!--remove	
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-24732595-1']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+remove-->  
+    </head>
+    <body id="body">
+        <!--[if lte IE 8]><center>Old Internet Explorers may work pretty badly with this site</center><![endif]--> 
+        <div id="top">{% mustache "top.mustache" %}</div>
+        <div id="content">{% mustache content content_data %}</div>
+
+        <script type="text/javascript">var static_prefix = '{{ static }}';</script>
+        {% if debug %}
+        <script type="text/javascript">var debug = true;</script>
+        <script src="{{ static }}lib/jquery-2.1.3.min.js"></script>
+        <script src="{{ static }}lib/lodash.min.js"></script>
+        <script src="{{ static }}lib/backbone-min.js"></script>
+        <script src="{{ static }}lib/backbone-tastypie.min.js"></script>
+        <script src="{{ static }}lib/jquery.lazyload.min.js"></script>
+        <script src="{{ static }}lib/jquery.cookie.min.js"></script>
+        <script src="{{ static }}lib/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="{{ static }}lib/mustache.min.js"></script>
+        <script src="{{ static }}lib/keyboard.js"></script>
+        <!--[if gte IE 9]> -->
+        <script src="{{ static }}js/views/main.js"></script>
+        <script src="{{ static }}js/views/top.js"></script>
+        <script src="{{ static }}js/views/develop.js"></script>
+        <script src="{{ static }}js/views/feedback.js"></script>
+        <script src="{{ static }}js/views/randoms.js"></script>
+        <script src="{{ static }}js/views/search.js"></script>
+        <script src="{{ static }}js/views/submit.js"></script>
+        <script src="{{ static }}js/views/single.js"></script>
+        <script src="{{ static }}js/views/tags.js"></script>
+        <script src="{{ static }}js/models.js"></script>
+        <script src="{{ static }}js/utils.js"></script>
+        <script src="{{ static }}js/main.js"></script>
+        <!-- <![endif]-->
+        {% else %}
+        <script type="text/javascript">var debug = false;</script>
+        <!--[if gte IE 9> -->
+        <script src="{{ static }}app.js?{{ updated }}"></script>
+        <!-- <![endif]-->
+        {% endif %} 
+    </body>
+</html>

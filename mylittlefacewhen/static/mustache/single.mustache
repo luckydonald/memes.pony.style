@@ -1,0 +1,105 @@
+{{^ face.accepted }}
+  <div class="text-center">This post is waiting for approval.</div>
+{{/ face.accepted }}
+<div itemscope itemtype="http://schema.org/ImageObject">
+  <div class="shrinkwrap-out text-center">
+    <div class="shrinkwrap-in">
+      <div id="singlewrap">
+        <a id="single" href="/random/"><img itemprop="contentURL" class="single" src="{{ image_service }}{{ image }}" alt="{{ face.description }}" title="{{ face.description }}" /></a>
+        <br />
+        <div id="controls">
+          <div tabindex=0 class="faded" id="flag" title="Report duplicate or other problem"></div>
+        </div>
+        <div id="shortlink"><a class="text-center small text-top" href="http://mlfw.info/f/{{ face.id }}/">http://mlfw.info/f/{{ face.id }}/</a><br><span class="small text-top">{{face.title}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="imageinfo" class="text-center">
+    <div class="editable" id="info-show">
+      <b>Tags: </b><br>
+      <span id="tags">
+        {{# face.tags }}{{# name }}<a class="tag" href="/search/?tag={{ name }}">{{ name }}</a>{{/ name }}{{/ face.tags}}
+      </span><br>
+      <b>Source: </b><br>
+      {{# face.artist }}
+      <span id="source">{{# face.source }}<a href="{{ face.source }}" rel="artist">{{ face.artist }}</a>{{/ face.source }}{{^ face.source }}<span>unknown</span>{{/ face.source }}</span><br>
+      {{/ face.artist }}{{^ face.artist }}
+      <span id="source">{{# face.source }}<a href="{{ face.source }}">{{ face.source }}</a>{{/ face.source }}{{^ face.source }}<span>unknown</span>{{/ face.source }}</span><br>
+      {{/ face.artist }}
+      <div id="button"><button id="editbutton">Edit</button></div>
+    </div>
+    <div class="editable" id="info-edit">
+      <form action="/f/<%= face.id %>/" method="post">
+        <b>Tags: </b><em class="small">Separated by comma, space allowed.</em>
+        <br>
+        <textarea name="tags" cols="32" rows="3">{{# face.tags }}{{ name }}, {{/ face.tags }}</textarea>
+        <hr>
+        <b>Source: </b><em class="small">URL or other reference</em>
+        <br>
+        <input name="source" value="{{# face.source }}{{ face.source }}{{/ face.source }}" size="30" />
+        <br>
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+
+    <div id="loader"><img src="{{ static_prefix }}dash.gif" alt="loading" /></div>
+    <hr>
+    <div class="text-center sizes">
+      <span class="b">Sizes:</span><br />
+      <a class="resize" href="{{ image_service }}{{ face.image }}">original</a>
+      {{# face.resizes }}<a class="resize" href="{{ image_service }}{{ image }}">{{ size }}</a> 
+      {{/ face.resizes }}
+      <a itemprop="thumbnailUrl" class="resize" href="{{ image_service }}{{ thumb }}">thumb</a>
+    </div>
+    <h2>Comments</h2>
+    <div id="comments">
+      <form>
+        <table>
+          <tr>
+            <td class="comment-username"><label>name</label></td>
+            <td class="comment-text"><label>comment</label></td>
+          </tr>
+          <tr>
+            <td class="comment-username">
+              <input name="username" value="Poninymous" required>
+              <input type="hidden" name="face" value="/api/v3/face/{{ face.id }}/">
+            </td>
+            <td class="comment-text"><input name="text" type="text" required maxlength="255"><input type="submit"></td>
+          </tr>
+          {{# face.comments }}
+          <tr>
+            <td class="comment-username" style="color: #{{color}}">{{ username }}</td>
+            <td class="comment-text">{{ text }}</td>
+          </tr>
+          {{/ face.comments }}{{^ face.comments }}
+          <tr>
+            <td></td>
+            <td class="comment-text">No comments</td>
+          </tr>
+          {{/ face.comments }}
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+<div id="boxes">
+  <div id="dialog" class="window">
+    <b>Report this image</b><br>
+    <span>You should report image if:</span>
+    <ul>
+      <li>Image is duplicate (of?)</li>
+      <li>Image is broken (how?)</li>
+      <li>Image is inappropriate (why?)</li>
+      <li>Image is poor (how?)</li>
+    </ul>
+    
+    <label for="report">Reasons:</label><br />
+    <textarea id="report" name="report"></textarea><br />
+    <div id="report_options">
+      <div class="text_left"><a href="#" class="close">Cancel</a></div>
+      <div class="text_right"><a href="#" class="report">Report</a></div>
+    </div>
+  </div>
+  <div id="mask"></div>
+</div>

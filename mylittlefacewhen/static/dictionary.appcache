@@ -1,0 +1,22 @@
+CACHE MANIFEST
+#2015-02-21 21:56:36
+CACHE:
+/static/favicon.ico?12
+/static/empty.gif?12
+/static/dash.gif?12
+/static/errors/derpy-404.png?12
+/static/errors/derpy-500.png?12
+/static/icons/red_flag_24.png?12
+/static/icons/white_flag_24.png?12
+/static/offline.html?12
+/static/css/responsive.css?12
+/static/css/normalize.css?12
+/static/css/rainbow_dash_always_dresses_in.css?12
+/static/css/rarity.css?12
+/static/css/jquery-ui-1.10.3.custom.css?12
+/static/app.js?12
+NETWORK:
+*
+http://*
+https://*
+/api/
