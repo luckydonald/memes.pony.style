@@ -2,7 +2,7 @@ from viewer.models import Face
 from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 
-from cStringIO import StringIO
+from io import StringIO
 
 try:
     from PIL import Image
@@ -12,7 +12,7 @@ except:
 for face in Face.objects.all():
     if not face.gif or not face.png:
         continue
-    print "id: " + str(face.id)
+    print("id: " + str(face.id))
 
     thumb = Image.open(face.png.path)
 

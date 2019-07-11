@@ -280,7 +280,7 @@ class Face(models.Model):
 
         count = objs.count()
         if type(number) == int:
-            return [objs[random.randint(0, count - 1)] for i in xrange(number)]
+            return [objs[random.randint(0, count - 1)] for i in range(number)]
         else:
             return objs[random.randint(0, count - 1)]
 
@@ -841,16 +841,16 @@ class ChangeLog(models.Model):
             return "Flagged with: " + self.flag.reason
         if self.prev:
             if self.prev.source != self.source:
-                s = unicode(self.prev.source) + " -> " + unicode(self.source)
+                s = str(self.prev.source) + " -> " + str(self.source)
             else:
                 s = "same source"
         else:
-            s = "None -> " + unicode(self.source)
+            s = "None -> " + str(self.source)
         s += " - "
         for tag in self.added():
-            s += "+%s, " % unicode(tag)
+            s += "+%s, " % str(tag)
         for tag in self.removed():
-            s += "-%s, " % unicode(tag)
+            s += "-%s, " % str(tag)
         return s[:-2]
 
 tagging.register(ChangeLog)
@@ -946,9 +946,9 @@ class UserComment(models.Model):
                 l = 10
                 for j in range(0, len(word) / l):
                     parts.append(word[j * l: (j + 1) * l])
-                word = u"\u200B".join(parts)
+                word = "\u200B".join(parts)
             out.append(word)
-        return u" ".join(out)
+        return " ".join(out)
 
     def save(self, *args, **kwargs):
 

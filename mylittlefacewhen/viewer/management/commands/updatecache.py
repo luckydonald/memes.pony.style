@@ -27,7 +27,7 @@ class Command(BaseCommand):
             "/static/css/jquery-ui-1.10.3.custom.css",
             "/static/app.js"]
 
-        for index in xrange(0, len(files)):
+        for index in range(0, len(files)):
             if files[index].endswith("js") or files[index].endswith("css"):
                 files[index] = files[index] + "?" + str(UPDATED)
 

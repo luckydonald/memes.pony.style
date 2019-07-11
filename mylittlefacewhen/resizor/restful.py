@@ -6,16 +6,12 @@
 #from resizor import models
 #from resizor import forms
 
-from cStringIO import StringIO
+from io import StringIO
 #import base64
 import re
 import json
-try:
-    import Image
-    import ImageFile
-except:
-    from PIL import Image
-    from PIL import ImageFile
+from PIL import Image
+from PIL import ImageFile
 ImageFile.MAXBLOCK = 1024*1024
 
 

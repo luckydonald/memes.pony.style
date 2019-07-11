@@ -22,7 +22,7 @@ import json
 from PIL import Image
 import requests
 import base64
-from cStringIO import StringIO
+from io import StringIO
 import imgur
 import re
 # "Suspension not allowed here" workaround
@@ -62,7 +62,7 @@ faces.sort()
 if not faces:
     sys.exit(0)
 
-for key, value in s.items():
+for key, value in list(s.items()):
     r = value["session"].post(value["server"] + "/login/", data={"username":username, "password":password})
     if r.status_code != 200:
         sys.exit("%s login failed: %s" % (key, r))
@@ -155,7 +155,7 @@ for face in faces:
 
     if re.match("[0-9]+[ +_]-[ +_]", part[0]):
         #ponibooru
-        print "ponibooru: " + face
+        print("ponibooru: " + face)
         pid = part[0].replace("+", " ").replace("_", " ").partition(" ")[0]
         r = requests.get(ponibooru + pid)
         if r.status_code == 200:
@@ -171,7 +171,7 @@ for face in faces:
             out["tags"] = tags
     elif len(part[0]) == 5:
         #imgur
-        print "imgur: " + face
+        print("imgur: " + face)
         img = imgur_access.image(part[0])
         if img:
             out["source"] = img["links"]["imgur_page"]
@@ -201,7 +201,7 @@ for face in faces:
 
     # WEBP not supported as input before I encounter one
     if ext not in ("png", "jpg", "gif", "jpeg"):
-        print "invalid image format: " + face
+        print("invalid image format: " + face)
         continue
 
     # PNGOUT
@@ -270,7 +270,7 @@ for face in faces:
     # GIF or not, if GIF then it should be an animation
     if image.format=="GIF":
         gifname = thumbname + ".gif"
-        print "GIF"
+        print("GIF")
         os.system("""convert "%s" -coalesce coalesce.gif""" % (image_path + face))
         os.system("convert coalesce.gif -resize %dx%d %s" % (THUMB_SIZE[0], THUMB_SIZE[1], gifname))
         shutil.move(gifname, thumbdir)
@@ -282,7 +282,7 @@ for face in faces:
 
         paste(t, generateText("GIF"), "S")
 
-        print t
+        print(t)
     
         jpgname = thumbname + ".jpg"
         t.save(thumbdir + jpgname, "JPEG", quality=70, optimize=True)
@@ -333,9 +333,9 @@ for face in faces:
         out["webp"] = thumbdir + webpname
                 
 
-    print out
-    for key,value in s.items():
-        print key
+    print(out)
+    for key,value in list(s.items()):
+        print(key)
 
         data = {"name":out["image"].rpartition("/")[2]}
 
@@ -353,7 +353,7 @@ for face in faces:
         r = value["session"].post(value["server"] + "/faces/", data=data)
         if r.status_code != 200 and key == "mlfw":
             shutil.copy(source_dir + face, failed_dir + getName(failed_dir, face)) 
-        print r.status_code
+        print(r.status_code)
         if r.status_code != 200:
             with open("error.log", "w") as dump:
                 dump.write(r.content)

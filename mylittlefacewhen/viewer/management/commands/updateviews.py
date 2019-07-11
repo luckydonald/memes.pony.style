@@ -29,17 +29,17 @@ class Command(BaseCommand):
         logs = os.listdir(self.accesslogdir)
         for log in logs:
             if log.split("-")[1] >= timestring:
-                print log
+                print(log)
                 with open(self.accesslogdir + log) as logfile:
                     data = json.loads(logfile.read())
-                    for id, views in data.iteritems():
+                    for id, views in data.items():
                         all_views[id] = all_views.get(id, 0) + views
 
         l = len(all_views)
         i = 1
 
-        for id, views in all_views.iteritems():
-            print "%d/%d" % (i, l)
+        for id, views in all_views.items():
+            print("%d/%d" % (i, l))
             i += 1
             try:
                 f = models.Face.objects.get(id=id)
@@ -48,5 +48,5 @@ class Command(BaseCommand):
                 continue
             f.views = views
             f.hotness = hotness(views, f.added)
-            print f.hotness
+            print(f.hotness)
             f.save()

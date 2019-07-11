@@ -4,7 +4,7 @@ Generates webp and jpg version of all the GIF images in the database.
 Superimposes "GIF" on these unanimated versions.
 """
 import cairo
-from cStringIO import StringIO
+from io import StringIO
 from datetime import datetime
 from viewer.models import Face
 try:
@@ -87,10 +87,10 @@ for face in Face.objects.exclude(gif=""):
     jpgname = thumbname + ".jpg"
     t.save(jpgname, "JPEG", quality=70, optimize=True)
     face.jpg = jpgname[32:]
-    print face.jpg
+    print(face.jpg)
 
     webpname = thumbname + ".webp"
     t.save(webpname, "WEBP", quality=30)
     face.webp = webpname[32:]
-    print face.webp
+    print(face.webp)
     face.save()

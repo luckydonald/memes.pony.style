@@ -11,7 +11,7 @@ for face in Face.objects.all():
         try:
             r = requests.head(ponychan + name)
         except:
-            print "ERROR"
+            print("ERROR")
             time.sleep(5)
             try:
                 r = requests.head(ponychan + name)
@@ -19,9 +19,9 @@ for face in Face.objects.all():
                 continue
         
         if r.status_code == 200:
-            print "FOUND"
+            print("FOUND")
         else:
-            print "no"
+            print("no")
 
 
 

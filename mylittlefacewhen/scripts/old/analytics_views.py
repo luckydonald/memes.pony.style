@@ -5,7 +5,7 @@ import json
 from viewer.models import *
 j = json.loads(open("views.json","r").read())
 
-for key, value in j.iteritems():
+for key, value in j.items():
     try:
         f = Face.objects.get(id=int(key))
         f.views = value

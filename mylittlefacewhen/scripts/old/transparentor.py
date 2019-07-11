@@ -12,7 +12,7 @@ for face in models.Face.objects.all():
     if face.tags.filter(name="transparent"):
         continue
 
-    print face.image
+    print(face.image)
     image = Image.open(face.image.path)
     if image.format == "PNG" and image.mode == "RGBA":
         Tag.objects.add_tag(face, "transparent")

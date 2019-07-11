@@ -4,7 +4,7 @@ import os
 import requests
 import shutil
 import sys
-from urllib import urlretrieve
+from urllib.request import urlretrieve
 
 import secrets
 
@@ -29,7 +29,7 @@ PNGOUT_PATH = "/home/inopia/pngout-static"
 session = requests.session()
 login_request = session.post(server + "/login/", data=logininfo, verify=False)
 
-print login_request
+print(login_request)
 if login_request.status_code != 200:
     sys.exit("login failed: %s" % login_request.read()[0:100])
 
@@ -90,7 +90,7 @@ def process_png(url, nq=False):
 
     if nq:
         nq_command = """pngnq -e .png -d %s %s""" % (nq_dir, temp_dir + "process.png")
-        print nq_command
+        print(nq_command)
         os.system(nq_command)
         os.remove(temp_dir + "process.png")
         shutil.move(nq_dir + "process.png", temp_dir)
@@ -98,12 +98,12 @@ def process_png(url, nq=False):
     if os.path.exists(out_dir + "out.png"):
         os.remove(out_dir + "out.png")
     pngout_command = """%s %s %s -y""" % (PNGOUT_PATH, temp_dir + "process.png", out_dir + "out.png")
-    print pngout_command
+    print(pngout_command)
     os.system(pngout_command)
 
     if not os.path.exists(out_dir + "out.png"):
         pngcrush_command = """pngcrush -rem alla -rem text %s %s""" % (temp_dir + "process.png", out_dir + "out.png")
-        print pngcrush_command
+        print(pngcrush_command)
         os.system(pngcrush_command)
 
     with open(out_dir + "out.png", "r") as out_png:
@@ -135,7 +135,7 @@ unprocesseds = json.loads(json_request.content)
 
 for face in unprocesseds:
     out = {"processed": True}
-    print face.get("id")
+    print(face.get("id"))
 
     to_process = {}
     if face["thumbnails"].get("jpg") and not face["image"].lower().endswith("gif"):
@@ -158,8 +158,8 @@ for face in unprocesseds:
         continue
 
     try:
-        for key, value in to_process.items():
-            print key
+        for key, value in list(to_process.items()):
+            print(key)
             if key == "gif":
                 out[key] = process_gif(value)
             elif key == "webp":
@@ -171,12 +171,12 @@ for face in unprocesseds:
             elif key in ("image", "small", "medium", "large", "huge"):
                 out[key] = process_png(value, nq=False)
     except:
-        print "ERROR"
+        print("ERROR")
         continue
 
     if out.get("image"):
         out["name"] = face["image"].rpartition("/")[2]
     put_request = session.put(server + "/faces/" + str(face["id"]) + "/", data=out, verify=False)
-    print put_request.status_code
+    print(put_request.status_code)
     if put_request.status_code != 200:
-        print put_request.read()
+        print(put_request.read())

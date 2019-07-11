@@ -3,7 +3,7 @@ from PIL import Image
 import os
 import requests
 import base64
-from cStringIO import StringIO
+from io import StringIO
 import sys
 import shutil
 import json

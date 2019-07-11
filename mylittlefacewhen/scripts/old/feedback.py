@@ -1,7 +1,7 @@
 import json
 import requests
 import sys
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import os
 
 username = ""
@@ -12,7 +12,7 @@ site = "http://0.0.0.0:8000/api"
 
 s = requests.session()
 r = s.post(site + "/login/", data={"username":username, "password":password})
-print r.status_code
+print(r.status_code)
 
 if not json.loads(r.content):
     sys.exit("error at login")
@@ -28,10 +28,10 @@ for feedback in feedbacks :
 
 for feedback in f:
     url = feedback.get("image")
-    print url
+    print(url)
     if url:
         try:
-            filu = urllib2.urlopen(url)
+            filu = urllib.request.urlopen(url)
             filename = url.rpartition("/")[2]
             ext = filename.rpartition(".")[2]
             i = 1
@@ -42,13 +42,13 @@ for feedback in f:
             output = open(filename, 'wb')
             output.write(filu.read())
             output.close()
-        except Exception, e:
-            print e
+        except Exception as e:
+            print(e)
 
-    print "message: " + feedback["text"]
+    print("message: " + feedback["text"])
     
     r = s.put(site + "/feedback/" + str(feedback["id"]) + "/")
-    print "processed: " + str(json.loads(r.content)["processed"])
+    print("processed: " + str(json.loads(r.content)["processed"]))
 
     
 

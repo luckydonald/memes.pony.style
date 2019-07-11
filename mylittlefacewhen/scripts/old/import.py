@@ -75,7 +75,7 @@ for directory in directories:
 	    # GIF or not
 	    if im.format=="GIF":
 		#ANIMATION
-		print "GIF"
+		print("GIF")
 		ext = ".gif"
 		os.system("""convert "%s" -coalesce coalesce.gif""" % (directory + react))
 		os.system("convert coalesce.gif -resize 100x100 %s" % (filename + ext))
@@ -102,7 +102,7 @@ for directory in directories:
 	    f.save()
 	    f.tags = "untagged"
 	    TagLog.new(f)
-	    print str((f.id, f.filename, f.webp, f.original, f.thumbname))
+	    print(str((f.id, f.filename, f.webp, f.original, f.thumbname)))
 	    current_id += 1
 	except IOError:
-	    print "cannot create thumbnail for %s" % react
+	    print("cannot create thumbnail for %s" % react)

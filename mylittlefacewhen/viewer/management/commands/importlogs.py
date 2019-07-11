@@ -14,14 +14,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         timeformat = "%d/%b/%Y:%H:%M:%S"
-        indexes = range(1,5)
+        indexes = list(range(1,5))
         indexes.reverse()
 
         for i in indexes:
             logname = "/home/inopia/logs/frontend/access_mylittlefacewhen.log.%d" % i
 
             with open(logname) as log:
-                print logname
+                print(logname)
                 first = True
 
                 for l in log:
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                         out["useragent"] = part[2].strip().strip('"')[:512]
                         if first:
                             if AccessLog.objects.filter(**out):
-                                print "already processed"
+                                print("already processed")
                                 break
                             else:
                                 first = False
@@ -64,6 +64,6 @@ class Command(BaseCommand):
                         
                     except:
                         try:
-                            print "Error: " + l
+                            print("Error: " + l)
                         except:
-                            print "Error."
+                            print("Error.")

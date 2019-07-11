@@ -10,7 +10,7 @@ for face in Face.objects.all():
     name = face.image.name.lstrip("f/img/").rpartition(".")[0]
     if len(name) != 5:
         continue
-    print name
+    print(name)
     img = access.image(name)
     if img:
         face.source = img["links"]["imgur_page"]

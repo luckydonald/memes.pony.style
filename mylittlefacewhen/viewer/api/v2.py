@@ -158,7 +158,7 @@ class FeedbackResource(ModelResource):
             bundle = super(FeedbackResource, self).obj_create(bundle, request, **kwargs)
             bundle.data = form.cleaned_data
 
-            for key, value in form.cleaned_data.iteritems():
+            for key, value in form.cleaned_data.items():
                 setattr(bundle.obj, key, value)
 
             bundle.obj.save()

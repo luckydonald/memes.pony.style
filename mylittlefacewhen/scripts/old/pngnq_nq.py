@@ -15,7 +15,7 @@ for imagefile in l:
     try:
         iid = int(part[0].partition("_")[0])
     except:
-        print imagefile
+        print(imagefile)
         sys.exit()
 
     if ext == "png" and iid > 1535:

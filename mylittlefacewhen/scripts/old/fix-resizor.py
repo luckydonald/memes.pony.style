@@ -15,7 +15,7 @@ for item in l:
 
 lista = []
 
-for key, value in out.items():
+for key, value in list(out.items()):
     value["id"] = int(key)
     lista.append(value)
 

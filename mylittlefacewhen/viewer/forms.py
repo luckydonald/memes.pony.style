@@ -185,7 +185,7 @@ class NewCreateFace(forms.Form):
                 imagedata = json.loads(imagedataraw)
             except:
                 imagedata = json.loads(imagedataraw.replace("'", '"'))
-            print imagedata.keys()
+            print(list(imagedata.keys()))
             mime = imagedata["mime"]
             filename = imagedata["filename"]
             image = base64.b64decode(imagedata["base64"])
@@ -197,7 +197,7 @@ class NewCreateFace(forms.Form):
             content_type=mime
         )
         self.cleaned_data["accepted"] = False
-        print self.cleaned_data
+        print(self.cleaned_data)
         return self.cleaned_data
 
 

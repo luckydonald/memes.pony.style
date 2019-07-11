@@ -2,7 +2,7 @@
 # -- coding: utf-8 --
 
 import cairo
-from cStringIO import StringIO
+from io import StringIO
 
 try:
     import Image

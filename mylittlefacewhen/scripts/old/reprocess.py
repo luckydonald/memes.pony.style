@@ -8,7 +8,7 @@ SIZENAMES = ("thumb", "small", "medium", "large", "huge")
 
 for face in Face.objects.filter(id__gte=1536):
 #    if not face.image.name.startswith("f/img/mlfw"):
-    print str(face.id) + ": " + face.image.name
+    print(str(face.id) + ": " + face.image.name)
     #namepart = face.image.name.rpartition("/")
     #relpath = namepart[0]
     #new_name = "/mlfw" + str(face.id) + "_" + namepart[2]

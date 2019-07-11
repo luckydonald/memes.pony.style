@@ -31,17 +31,17 @@ if login_request.status_code != 200:
 
 
 for face in faces:
-    print face
+    print(face)
     out = {}
     with open(source_dir + face, "r") as image_file:
         out["image"] = base64.b64encode(image_file.read())
     out["name"] = face
     out["accepted"] = True
     upload_request = session.post(server + "/faces/", data = out)
-    print upload_request.status_code
+    print(upload_request.status_code)
     if upload_request.status_code != 200:
         shutil.move(source_dir+face, error_dir)
-        print upload_request.read()
+        print(upload_request.read())
         break
     elif not DEBUG:
         os.remove(source_dir+face)

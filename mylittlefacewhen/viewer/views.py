@@ -104,7 +104,7 @@ def single(request, face_id):
     f.update({
         "tags": [{"name":tag.name} for tag in face.tags],
         "image": face.image.url,
-        "resizes": [{"size":size, "image": image} for size, image in face.resizes.items()]})
+        "resizes": [{"size":size, "image": image} for size, image in list(face.resizes.items())]})
 
     artist, title, description = face.getMeta()
 
