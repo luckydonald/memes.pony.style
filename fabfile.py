@@ -15,7 +15,7 @@ import json
 #from fabric.api import *  # oh my god... it's full of stars
 from fabric.api import cd, local, get, run, put, env
 
-import secrets
+import somewhere as secrets
 
 LIBS = (
     "jquery-2.1.3.min.js",

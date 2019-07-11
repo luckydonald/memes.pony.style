@@ -44,7 +44,7 @@ PONIES = {
 CMC = {"scootaloo", "applebloom", "sweetie belle"}
 MANE6 = {"twilight sparkle", "pinkie pie", "rainbow dash", "fluttershy", "rarity", "applejack"}
 
-ADMINMAILS = ["moderators@mylittlefacewhen.com"]
+ADMINMAILS = ["moderators.mylittlefacewhen.com@luckydonald.de"]
 
 
 def _detectSource(filename):

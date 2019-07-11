@@ -6,7 +6,7 @@ import shutil
 import sys
 from urllib.request import urlretrieve
 
-import secrets
+import somewhere as secrets
 
 try:
     from PIL import Image
