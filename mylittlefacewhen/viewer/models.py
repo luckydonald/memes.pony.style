@@ -36,7 +36,7 @@ PONIES = {
     "shining armor", "colgate", "silver spoon", "diamond tiara", "vinyl scratch", "derpy hooves", "hoity toity",
     "gummy", "snips", "snails", "spiderman", "granny smith", "opalescence", "angel", "doctor whooves", "trixie",
     "gilda", "skeletor", "octavia", "lauren faust", "daring do", "guard pony", "ursa minor", "lightning dust",
-    "zecora"}
+    "zecora", "littlepip"}
 
 #TODO all episodes
 #TODO tags should cointain info about the character without sets like these
