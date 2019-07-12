@@ -16,7 +16,8 @@ except:
     from PIL import Image  # NOQA
 
 import requests
-import tagging
+from tagging.registry import register as register_tags
+
 
 from resizor.restful import process_image as resizor
 from viewer import forms
@@ -178,6 +179,7 @@ class Face(models.Model):
 
     duplicate_of = models.ForeignKey(
         'self',
+        on_delete=models.CASCADE,  # if the face is deleted this is marked duplicate of, delete as well.
         null=True,
         blank=True,
         default=None,
@@ -641,7 +643,8 @@ class Face(models.Model):
     def __unicode__(self):
         return str(self.id) + " - " + self.title
 
-tagging.register(Face)
+
+register_tags(Face)
 
 
 class Flag(models.Model):
@@ -650,6 +653,7 @@ class Flag(models.Model):
     """
     face = models.ForeignKey(
         Face,
+        on_delete=models.CASCADE,  # if the face is deleted, delete flag reports too.
         help_text="Face related to this report.")
 
     user_agent = models.CharField(
@@ -696,6 +700,7 @@ class ChangeLog(models.Model):
 
     face = models.ForeignKey(
         Face,
+        on_delete=models.SET_NULL,  # if the face is deleted this is logging, set to null.
         help_text="Face related to change")
 
     source = models.URLField(
@@ -706,9 +711,10 @@ class ChangeLog(models.Model):
 
     flag = models.ForeignKey(
         Flag,
+        on_delete=models.SET_NULL,  # if the flag is deleted this is logging, set to null.
         null=True,
         help_text="Face was flagged",
-        on_delete=models.SET_NULL)
+    )
 
     @staticmethod
     def new_edit(face):
@@ -853,7 +859,7 @@ class ChangeLog(models.Model):
             s += "-%s, " % str(tag)
         return s[:-2]
 
-tagging.register(ChangeLog)
+register_tags(ChangeLog)
 
 
 class Feedback(models.Model):
@@ -907,6 +913,7 @@ class UserComment(models.Model):
 
     face = models.ForeignKey(
         Face,
+        on_delete=models.CASCADE,  # if the face is deleted, delete comments as well
         help_text="Face that is being commented")
 
     username = models.CharField(
