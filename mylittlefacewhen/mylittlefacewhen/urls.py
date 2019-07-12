@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 
 from viewer import feeds, views
@@ -12,8 +12,7 @@ from viewer.api import v3
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     #PAGE
     url(r'^$', views.main, name="index"),
     url(r'^new/?$', views.main, {"listing": "new"}, name="new"),
@@ -58,8 +57,8 @@ urlpatterns = patterns(
     # url(r'^api/resizor/$', resizor),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
-)
+    url(r'^admin/', admin.site.urls),  # https://stackoverflow.com/a/43324478/3423324
+]
 
 #if settings.DEBUG:
 #    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
