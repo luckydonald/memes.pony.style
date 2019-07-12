@@ -52,7 +52,7 @@ INSTALLED_APPS = (
     'resizor',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'viewer.middleware.RedirectDomain',
     'viewer.middleware.RedirectIE9',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,14 +64,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'viewer.middleware.NoCache',
     'viewer.middleware.AllowPieforkMiddleware',
-)
-
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'viewer.templatetags.mustache.Loader',
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # needed for admin
+    'django.contrib.messages.middleware.MessageMiddleware',  # needed for admin
+    'django.contrib.sessions.middleware.SessionMiddleware',  # needed for admin
 )
 
 TEMPLATE_DIRS = (
@@ -81,6 +76,29 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
+
+# List of callables that know how to import templates from various sources.
+TEMPLATE_LOADERS = (
+    'viewer.templatetags.mustache.Loader',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    # 'django.template.loaders.eggs.Loader',
+)
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',  # needed for admin
+        'DIRS': TEMPLATE_DIRS,
+        'APP_DIRS': True,
+        'OPTIONS': {
+           'loaders': TEMPLATE_LOADERS,
+        },
+    },
+]
+
+
+
+
 ROOT_URLCONF = 'mylittlefacewhen.urls'
 
 WSGI_APPLICATION = 'mylittlefacewhen.wsgi.application'
