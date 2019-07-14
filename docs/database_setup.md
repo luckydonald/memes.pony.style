@@ -11,6 +11,7 @@ GRANT ALL ON DATABASE memes_pony_style TO memes_pony_style;
 # create migration files
 ```bash
 python manage.py makemigrations
+python manage.py makemigrations viewer
 ```
 
 # apply migration files
