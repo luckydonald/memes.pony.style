@@ -4,13 +4,18 @@ import datetime
 import json
 import subprocess
 import re
+import multiprocessing
 from filelock import FileLock
 from collections import namedtuple
 from html.parser import HTMLParser
 
+NUMTHREADS=10
+
 face_tuple = namedtuple('Face', ['url', 'mime', 'begin', 'end', 'groupcnt', 'uniqcnt'])
 
 image_re = re.compile(".*mylittlefacewhen.com(:80)?/f/[1-9][0-9]*$")
+
+id_start_re = re.compile(".*mylittlefacewhen.com(:80)?/f/")
 
 tag_re = re.compile(".*http://mylittlefacewhen.com(:80)?/search/\?tag=.*")
 
@@ -63,10 +68,11 @@ def write_error(message):
         with open("error_log", "a") as error_log:
             print(message, file=error_log)
 
-def extract(idx, face):
+def extract(workunit):
+    idx, face = workunit
     face = face_tuple(*face)
     print ('getting', face)
-    url = "https://web.archive.org/web/%(date)s/%(url)s"%dict(date=face.begin, url=face.url)
+    url = "https://web.archive.org/web/%(date)s/%(url)s"%dict(date=face.end , url=face.url)
     print(url)
     #download the page
     try:
@@ -92,7 +98,31 @@ def extract(idx, face):
     o = o.decode("utf-8")
     tags = parser.feed(o)
 
-write_error("Run starting %s:"%datetime.datetime.now())
-for idx,face in enumerate(dump):
-    extract(idx, face)
+    return tags
 
+write_error("Run starting %s:"%datetime.datetime.now())
+pool = multiprocessing.Pool(NUMTHREADS)
+all_tags = pool.map(extract, enumerate(dump[:50]))
+
+
+tag_mapping = dict()
+
+for idx,tags in enumerate(all_tags):
+    face = face_tuple(*dump[idx])
+    if tags and image_re.match(face.url):
+        id_start = id_start_re.match(face.url).span()[1]
+        if not id_start:
+            continue
+
+        id_ = face.url[id_start:]
+        if id_ in tag_mapping:
+            raise KeyError("mlfw id already in mapping")
+        
+        tag_mapping[id_] = tags
+
+
+with open("tags.json", "w") as f:
+    json.dump(tag_mapping, f)
+
+
+print(len(tag_mapping), "images' tags extracted")
