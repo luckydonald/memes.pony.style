@@ -15,7 +15,7 @@ where main_vars is a dict containing variables needed by the mustache.
 
 from django import template
 from django.conf import settings
-from django.template import Template
+from django.template import Template, TemplateDoesNotExist
 # from django.template.base import TemplateEncodingError, TemplateDoesNotExist,
 from django.template.base import Origin
 # from django.template.loader import make_origin
@@ -50,14 +50,14 @@ class PystacheTemplate(Template):
 
 class Loader(filesystem.Loader):
 
-    def get_template_sources(self, template_name, template_dirs=None):
-        if not template_name.endswith(".mustache"):
-            return []
-        else:
-            return super(Loader, self).get_template_sources(template_name, template_dirs)
+    # def get_template_sources(self, template_name, template_dirs=None):
+    #     if not template_name.endswith(".mustache"):
+    #         return []
+    #     else:
+    #         return super(Loader, self).get_template_sources(template_name)
 
-    def load_template(self, template_name, template_dirs=None):
-        source, display_name = self.load_template_source(template_name, template_dirs)
+    def load_template(self, template_name):
+        source, display_name = self.load_template_source(template_name)
         # origin = make_origin(display_name, self.load_template_source, template_name, template_dirs)
         origin = Origin(
             name=template_name, template_name=template_name,
