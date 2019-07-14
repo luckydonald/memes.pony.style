@@ -6,8 +6,7 @@ from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.utils import deprecation
 from django.utils.cache import add_never_cache_headers
 from django.utils.html import strip_spaces_between_tags
-
-PONIES = ("rarity",)
+from luckydonaldUtils.eastereggs.ponies import WAIFU
 
 
 class ContentTypeMiddleware(object):
@@ -71,16 +70,15 @@ class Style(deprecation.MiddlewareMixin):
         else:
             pony = request.COOKIES.get("best_pony")
 
-        if pony not in PONIES:
-            #request.best_pony = random.choice(PONIES)
-            request.best_pony = "rarity"
+        if pony not in WAIFU:
+            request.best_pony = random.choice(WAIFU)
         else:
             request.best_pony = pony
         return None
 
     def process_response(self, request, response):
         pony = request.COOKIES.get("best_pony", "")
-        if pony not in PONIES:
+        if pony not in WAIFU:
             expires = datetime.utcnow() + timedelta(days=365)
             try:
                 best_pony = request.best_pony
