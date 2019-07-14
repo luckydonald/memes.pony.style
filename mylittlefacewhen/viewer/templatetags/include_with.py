@@ -1,47 +1,41 @@
 """
-Custom template loader, template and templatetag to handle mustache templates.
+Custom template tag to let the template engine be chosen automatically.
 
-PystacheTemplate and Loader are pretty much copies of their parent classes
-with one line modifications or so.
-
-do_mustache allows template tags like
-{% mustache "main.mustache" %}
-and
-{% mustache "main.mustache" main_vars %}
-
+{% include_with "foo/some_include" %}
+{% include_with "foo/some_include" with bar="BAZZ!" baz="BING!" %}
+{% include_with some_variable with bar=other_variable baz="BING!" %}
 where main_vars is a dict containing variables needed by the mustache.
 
 """
 
-from django import template
-from django.template import TemplateSyntaxError
 from django.template.base import token_kwargs, Node
 from django.template.loader import get_template
-from django.template.loader_tags import construct_relative_path
 from django.template.loaders import filesystem
+from django.template.library import Library
+from django.template.exceptions import TemplateSyntaxError
+from django.template.loader_tags import construct_relative_path
 
-# noinspection PyUnresolvedReferences
-# from django.template.loaders.filesystem import Loader  # needed for settings.py
-
-register = template.Library()
+register = Library()
 
 
 @register.tag(name='include_with')
-def include_with(parser, token):
+def do_include_with(parser, token):
     """
     Load a template and render it with the current context. You can pass
     additional context using keyword arguments.
 
     Example::
 
-        {% include "foo/some_include" %}
-        {% include "foo/some_include" with bar="BAZZ!" baz="BING!" %}
+        {% include_with "foo/some_include" %}
+        {% include_with "foo/some_include" with bar="BAZZ!" baz="BING!" %}
 
     Use the ``only`` argument to exclude the current context when rendering
     the included template::
 
-        {% include "foo/some_include" only %}
-        {% include "foo/some_include" with bar="1" only %}
+        {% include_with "foo/some_include" only %}
+        {% include_with "foo/some_include" with bar="1" only %}
+
+    This method is mostly ripped out of django.template.loader_tags.do_include(...).
     """
     bits = token.split_contents()
     if len(bits) < 2:
@@ -55,13 +49,11 @@ def include_with(parser, token):
     while remaining_bits:
         option = remaining_bits.pop(0)
         if option in options:
-            raise TemplateSyntaxError('The %r option was specified more '
-                                      'than once.' % option)
+            raise TemplateSyntaxError('The %r option was specified more than once.' % option)
         if option == 'with':
             value = token_kwargs(remaining_bits, parser, support_legacy=False)
             if not value:
-                raise TemplateSyntaxError('"with" in %r tag needs at least '
-                                          'one keyword argument.' % bits[0])
+                raise TemplateSyntaxError('"with" in %r tag needs at least one keyword argument.' % bits[0])
         elif option == 'only':
             value = True
         else:
@@ -70,9 +62,10 @@ def include_with(parser, token):
         options[option] = value
     isolated_context = options.get('only', False)
     name_map = options.get('with', {})
-    template_name = parser.compile_filter(template_name)  # "string" vs variable
-    return IncludeWithNode(
-        template_name=template_name, isolated_context=isolated_context, name_map=name_map, origin_template_name=parser.origin.template_name
+    template_name = parser.compile_filter(template_name)  # resolve `"string"` vs `variable`
+    return IncludeWithNode(  # as we don't have the context available we need to return object having `.render(context)`
+        template_name=template_name, isolated_context=isolated_context,
+        name_map=name_map, origin_template_name=parser.origin.template_name,
     )
 # end def
 
@@ -88,12 +81,12 @@ class IncludeWithNode(Node):
 
     def render(self, context):
         """
-        Ripped from IncludeNode
+        Partly ripped from django.template.loader_tags.IncludeNode
         """
-        # Does this quack like a Template?
         template_name = self.template_name.resolve(context)
         template_name = construct_relative_path(self.origin_template_name, template_name)
         template = get_template(template_name)
+        # Does this quack like a Template?
         if not callable(getattr(template, 'render', None)):
             raise TypeError("Must have .render(...) method")
         # end def
