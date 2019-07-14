@@ -1,3 +1,5 @@
+from typing import Dict
+
 UPDATED = 17
 
 def get_client_ip(request):
@@ -11,28 +13,30 @@ def get_client_ip(request):
 
 def standard_r2r(function):
     from django.http import HttpResponse
-    from django.shortcuts import render_to_response
+    from django.shortcuts import render
     from django.template import RequestContext
 
     def inner(request, *args, **kwargs):
         response = function(request, *args, **kwargs)
         try:
+            to_template: Dict
             template, to_template = response
         except ValueError:
             pass
         else:
             response = template
+        # end try
 
         if isinstance(response, HttpResponse):
             return response
 
         to_template.update({"updated": UPDATED})
-#            "url": request.resolver_match.url_name})
 
-        return render_to_response(
-            template,
-            to_template,
-            context_instance=RequestContext(request))
+        return render(
+            request,
+            template_name=template,
+            context=to_template,
+        )
 
     return inner
 
