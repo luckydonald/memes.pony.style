@@ -82,6 +82,8 @@ TEMPLATE_LOADERS = (
     'viewer.templatetags.mustache.Loader',
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'django.contrib.auth.context_processors.auth',  # needed for admin
+    'django.contrib.messages.context_processors.messages',  # needed for admin
     # 'django.template.loaders.eggs.Loader',
 )
 
@@ -89,9 +91,13 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',  # needed for admin
         'DIRS': TEMPLATE_DIRS,
-        'APP_DIRS': True,
+        # 'APP_DIRS': True,
         'OPTIONS': {
            'loaders': TEMPLATE_LOADERS,
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
         },
     },
 ]

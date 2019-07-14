@@ -700,6 +700,7 @@ class ChangeLog(models.Model):
 
     face = models.ForeignKey(
         Face,
+        null=True,
         on_delete=models.SET_NULL,  # if the face is deleted this is logging, set to null.
         help_text="Face related to change")
 
@@ -926,7 +927,7 @@ class UserComment(models.Model):
         default="",
         help_text="Comment itself")
 
-    client = models.IPAddressField(
+    client = models.GenericIPAddressField(
         help_text="IP of the commenter")
 
     visible = models.CharField(
