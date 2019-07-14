@@ -1,6 +1,6 @@
-{% load static %}{% get_static_prefix as static %}<!DOCTYPE html>
+{% load static %}{% load include_with %}{% get_static_prefix as static %}<!DOCTYPE html>
 <html lang="en" {% if not_firefox and not debug %}manifest="{{ static }}dictionary.appcache"{% endif %}>
-    <head>{% include "meta.mustache" with path=metadata.path static_prefix=metadata.static_prefix title=metadata.title description=metadata.description default_image=metadata.default_image title=metadata.title description=metadata.description %}
+    <head>{% include_with meta.mustache with path=metadata.path static_prefix=metadata.static_prefix title=metadata.title description=metadata.description default_image=metadata.default_image title=metadata.title description=metadata.description %}
 <!--remove
 <script type="text/javascript">
   var _gaq = _gaq || [];

@@ -14,7 +14,6 @@ def get_client_ip(request):
 def standard_r2r(function):
     from django.http import HttpResponse
     from django.shortcuts import render
-    from django.template import RequestContext
 
     def inner(request, *args, **kwargs):
         response = function(request, *args, **kwargs)
@@ -33,7 +32,7 @@ def standard_r2r(function):
         to_template.update({"updated": UPDATED})
 
         return render(
-            request,
+            request=request,
             template_name=template,
             context=to_template,
         )

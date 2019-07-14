@@ -100,7 +100,7 @@ class AllowPieforkMiddleware(deprecation.MiddlewareMixin):
             return HttpResponse()
 
     def process_response(self, request, response):
-        if  request.META.get('HTTP_ORIGIN'):
+        if request.META.get('HTTP_ORIGIN'):
             response['Access-Control-Allow-Origin'] = request.META.get('HTTP_ORIGIN')
             response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS, DELETE, PUT, PATCH'
             response['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'

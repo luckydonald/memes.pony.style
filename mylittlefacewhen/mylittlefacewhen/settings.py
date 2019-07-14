@@ -73,6 +73,7 @@ MIDDLEWARE = (
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'viewer.templatetags.include_with.Loader',
     # 'django.contrib.auth.context_processors.auth',  # needed for admin
     # 'django.contrib.messages.context_processors.messages',  # needed for admin
     # 'django.template.loaders.eggs.Loader',
