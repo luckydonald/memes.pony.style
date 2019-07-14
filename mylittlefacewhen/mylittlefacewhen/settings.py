@@ -69,40 +69,37 @@ MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',  # needed for admin
 )
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, "templates"),
-    os.path.join(BASE_DIR, "static/mustache"),
-    # Put strings here, like "/home/html/django_templates"
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    'django.contrib.auth.context_processors.auth',  # needed for admin
-    'django.contrib.messages.context_processors.messages',  # needed for admin
+    # 'django.contrib.auth.context_processors.auth',  # needed for admin
+    # 'django.contrib.messages.context_processors.messages',  # needed for admin
     # 'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATES = [
     {
         'BACKEND': 'django_mustache.Mustache',
-        'DIRS': TEMPLATE_DIRS,
+        'DIRS': (
+            os.path.join(BASE_DIR, "static/mustache"),
+        ),
         'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
             ],
             'partials_dir': 'partials',
-            'file_extension': 'html',
+            'file_extension': 'mustache',
         }
     },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',  # needed for admin
-        'DIRS': TEMPLATE_DIRS,
+        'DIRS': (
+            os.path.join(BASE_DIR, "templates"),
+            # Put strings here, like "/home/html/django_templates"
+            # Always use forward slashes, even on Windows.
+            # Don't forget to use absolute paths, not relative paths.
+        ),
         # 'APP_DIRS': True,
         'OPTIONS': {
            'loaders': TEMPLATE_LOADERS,
