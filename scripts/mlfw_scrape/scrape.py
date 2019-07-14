@@ -58,35 +58,41 @@ class MyHTMLParser(HTMLParser):
 
 parser = MyHTMLParser()
 
+def write_error(message):
+    with FileLock("/tmp/mlfw_scrape_error.lock"):
+        with open("error_log", "a") as error_log:
+            print(message, file=error_log)
 
+def extract(idx, face):
+    face = face_tuple(*face)
+    print ('getting', face)
+    url = "https://web.archive.org/web/%(date)s/%(url)s"%dict(date=face.begin, url=face.url)
+    print(url)
+    #download the page
+    try:
+        o = subprocess.check_output(["curl", url])
+    except subprocess.CalledProcessError as e:
+        write_error("%s: error on face id %d %s"%(e, idx, face))
+        return
+    #make a directory for the output and save it
+    dir_ = "mlfw_scrape/%s/"%(idx)
+    try:
+        os.mkdir(dir_)
+    except FileExistsError:
+        pass
 
-with open("error_log", "a") as error_log:
-    print("Run starting %s:"%datetime.datetime.now(), file=error_log)
-    for idx,face in enumerate(dump):
-        face = face_tuple(*face)
-        print ('getting', face)
-        url = "https://web.archive.org/web/%(date)s/%(url)s"%dict(date=face.begin, url=face.url)
-        print(url)
-        #download the page
-        try:
-            o = subprocess.check_output(["curl", url])
-        except subprocess.CalledProcessError as e:
-            print("%s: error on face id %d %s"%(e, idx, face), file=error_log)
-            continue
-        #make a directory for the output and save it
-        dir_ = "mlfw_scrape/%s/"%(idx)
-        try:
-            os.mkdir(dir_)
-        except FileExistsError:
-            pass
+    with open(dir_+"foo.html", "wb") as f:
+        f.write(o)
 
-        with open(dir_+"foo.html", "wb") as f:
-            f.write(o)
+    #check to see if it is a face url
+    if not image_re.match(face.url):
+        print("ignoring", face)
+        return
+    #parse the html
+    o = o.decode("utf-8")
+    tags = parser.feed(o)
 
-        #check to see if it is a face url
-        if not image_re.match(face.url):
-            print("ignoring", face)
-            continue
-        #parse the html
-        o = o.decode("utf-8")
-        tags = parser.feed(o)
+write_error("Run starting %s:"%datetime.datetime.now())
+for idx,face in enumerate(dump):
+    extract(idx, face)
+
