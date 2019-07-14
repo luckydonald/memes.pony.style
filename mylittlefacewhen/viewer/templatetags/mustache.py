@@ -16,11 +16,15 @@ where main_vars is a dict containing variables needed by the mustache.
 from django import template
 from django.conf import settings
 from django.template import Template
-from django.template.base import TemplateEncodingError, TemplateDoesNotExist
-from django.template.loader import make_origin
+# from django.template.base import TemplateEncodingError, TemplateDoesNotExist,
+from django.template.base import Origin
+# from django.template.loader import make_origin
 from django.template.loaders import filesystem
-from django.utils.encoding import smart_unicode
+# from django.utils.encoding import smart_unicode
 from pystache import render as pystache_render
+
+from django.template.loaders.base import Loader
+from django.template.engine import Engine
 
 register = template.Library()
 
@@ -28,12 +32,12 @@ register = template.Library()
 class PystacheTemplate(Template):
 
     def __init__(self, template_string, origin=None, name='<Unknown Template>'):
-        try:
-            template_string = smart_unicode(template_string)
-        except:
-            raise TemplateEncodingError("Templates can only be constructed from unicode or UTF-8 strings.")
-        if settings.TEMPLATE_DEBUG and origin is None:
-            origin = template.StringOrigin(template_string)
+        #try:
+            # template_string = smart_unicode(template_string)
+        #except:
+        #    raise TemplateEncodingError("Templates can only be constructed from unicode or UTF-8 strings.")
+        #if settings.TEMPLATE_DEBUG and origin is None:
+        #    origin = template.StringOrigin(template_string)
         self.nodelist = template_string
         self.name = name
 
@@ -54,7 +58,10 @@ class Loader(filesystem.Loader):
 
     def load_template(self, template_name, template_dirs=None):
         source, display_name = self.load_template_source(template_name, template_dirs)
-        origin = make_origin(display_name, self.load_template_source, template_name, template_dirs)
+        # origin = make_origin(display_name, self.load_template_source, template_name, template_dirs)
+        origin = Origin(
+            name=template_name, template_name=template_name,
+        )
         try:
             template = PystacheTemplate(source, origin, template_name)
             return template, None
