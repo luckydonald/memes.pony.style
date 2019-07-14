@@ -14,25 +14,19 @@ where main_vars is a dict containing variables needed by the mustache.
 """
 
 from django import template
-from django.conf import settings
-from django.shortcuts import render
-from django.template import Template, TemplateDoesNotExist, TemplateSyntaxError
-# from django.template.base import TemplateEncodingError, TemplateDoesNotExist,
-from django.template.base import Origin, token_kwargs
-# from django.template.loader import make_origin
+from django.template import TemplateSyntaxError
+from django.template.base import token_kwargs, Node
 from django.template.loader import get_template
-from django.template.loader_tags import IncludeNode, construct_relative_path
+from django.template.loader_tags import construct_relative_path
 from django.template.loaders import filesystem
-# from django.utils.encoding import smart_unicode
-from pystache import render as pystache_render
 
-from django.template.loaders.base import Loader
-from django.template.engine import Engine
+# noinspection PyUnresolvedReferences
+# from django.template.loaders.filesystem import Loader  # needed for settings.py
 
 register = template.Library()
 
 
-@register.tag('include_with')
+@register.tag(name='include_with')
 def include_with(parser, token):
     """
     Load a template and render it with the current context. You can pass
@@ -75,7 +69,49 @@ def include_with(parser, token):
                                       (bits[0], option))
         options[option] = value
     isolated_context = options.get('only', False)
-    namemap = options.get('with', {})
-    template_name = construct_relative_path(parser.origin.template_name, template_name)
-    template = get_template(template_name)
-    return template.render(context=namemap)
+    name_map = options.get('with', {})
+    template_name = parser.compile_filter(template_name)  # "string" vs variable
+    return IncludeWithNode(
+        template_name=template_name, isolated_context=isolated_context, name_map=name_map, origin_template_name=parser.origin.template_name
+    )
+# end def
+
+
+class IncludeWithNode(Node):
+    def __init__(self, template_name, isolated_context, name_map, origin_template_name):
+        self.template_name = template_name
+        self.isolated_context = isolated_context
+        self.name_map = name_map
+        self.origin_template_name = origin_template_name
+        super().__init__()
+    # end def
+
+    def render(self, context):
+        """
+        Ripped from IncludeNode
+        """
+        # Does this quack like a Template?
+        template_name = self.template_name.resolve(context)
+        template_name = construct_relative_path(self.origin_template_name, template_name)
+        template = get_template(template_name)
+        if not callable(getattr(template, 'render', None)):
+            raise TypeError("Must have .render(...) method")
+        # end def
+
+        values = {
+            name: var.resolve(context)
+            for name, var in self.name_map.items()
+        }
+        if self.isolated_context:
+            return template.render(context.new(values))
+        with context.push(**values):
+            return template.render(context)
+        # end if
+    # end def
+# end class
+
+
+class Loader(filesystem.Loader):
+    pass
+# end class
+

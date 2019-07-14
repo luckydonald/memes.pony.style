@@ -69,16 +69,6 @@ MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',  # needed for admin
 )
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    'viewer.templatetags.include_with.Loader',
-    # 'django.contrib.auth.context_processors.auth',  # needed for admin
-    # 'django.contrib.messages.context_processors.messages',  # needed for admin
-    # 'django.template.loaders.eggs.Loader',
-)
-
 TEMPLATES = [
     {
         'BACKEND': 'django_mustache.Mustache',
@@ -89,6 +79,10 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
             ],
+            # 'loaders': [
+            #     'django.template.loaders.filesystem.Loader',
+            #     'viewer.templatetags.include_with.Loader',
+            # ],
             'partials_dir': 'partials',
             'file_extension': 'mustache',
         }
@@ -103,7 +97,16 @@ TEMPLATES = [
         ),
         # 'APP_DIRS': True,
         'OPTIONS': {
-           'loaders': TEMPLATE_LOADERS,
+           'loaders': (
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+                'viewer.templatetags.include_with.Loader',
+                # 'viewer.templatetags.include_with.Loader',
+                # 'django.contrib.auth.context_processors.auth',  # needed for admin
+                # 'django.contrib.messages.context_processors.messages',  # needed for admin
+                # 'django.template.loaders.eggs.Loader',
+
+           ),
             'context_processors': [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",

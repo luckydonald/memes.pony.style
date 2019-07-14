@@ -1,6 +1,6 @@
 {% load static %}{% load include_with %}{% get_static_prefix as static %}<!DOCTYPE html>
 <html lang="en" {% if not_firefox and not debug %}manifest="{{ static }}dictionary.appcache"{% endif %}>
-    <head>{% include_with meta.mustache with path=metadata.path static_prefix=metadata.static_prefix title=metadata.title description=metadata.description default_image=metadata.default_image title=metadata.title description=metadata.description %}
+    <head>{% include_with "meta.mustache" with path=metadata.path static_prefix=metadata.static_prefix title=metadata.title description=metadata.description default_image=metadata.default_image title=metadata.title description=metadata.description %}
 <!--remove
 <script type="text/javascript">
   var _gaq = _gaq || [];
@@ -17,8 +17,8 @@ remove-->
     </head>
     <body id="body">
         <!--[if lte IE 8]><center>Old Internet Explorers may work pretty badly with this site</center><![endif]-->
-        <div id="top">{% include "top.mustache" %}</div>
-        <div id="content">{% include content with content_data=content_data %}</div>
+        <div id="top">{% include_with "top.mustache" %}</div>
+        <div id="content">{% include_with content with content_data=content_data %}</div>
 
         <script type="text/javascript">var static_prefix = '{{ static }}';</script>
         {% if debug %}
