@@ -47,8 +47,8 @@ class RedirectDomain(deprecation.MiddlewareMixin):
         host = request.META.get("HTTP_HOST")
         if not host:
             return None
-        if host not in ("mylittlefacewhen.com", "tiuku.me:8888"):
-            url = "http://mylittlefacewhen.com" + request.path
+        if host not in ("memes.pony.style", "127.0.0.1", "127.0.0.1:8000", "localhost", "localhost:8000"):  # TODO: env
+            url = "https://memes.pony.style" + request.path     # TODO: env
             return HttpResponsePermanentRedirect(url)
 
 

@@ -26,7 +26,7 @@ TEMPLATE_DEBUG = DEBUG
 
 INTERNAL_IPS = ("62.78.185.109")
 
-ALLOWED_HOSTS = ["mlfw.info", "mylittlefacewhen.com", "www.mlfw.info", "www.mylittlefacewhen.com"]
+ALLOWED_HOSTS = ["memes.pony.style", "127.0.0.1", "localhost"]
 
 if DEBUG:
     import mimetypes
