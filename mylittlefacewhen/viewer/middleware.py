@@ -1,7 +1,9 @@
+import random
 from datetime import datetime, timedelta
 
 from django.http import HttpResponse
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
+from django.utils import deprecation
 from django.utils.cache import add_never_cache_headers
 from django.utils.html import strip_spaces_between_tags
 
@@ -17,7 +19,7 @@ class ContentTypeMiddleware(object):
 # Opera supported .webp from ver 11.10
 
 
-class RedirectIE9(object):
+class RedirectIE9(deprecation.MiddlewareMixin):
     """
     Internet Explorer doesnt support pushstate history. This breaks links
     opened by IE, pasted by other browsers and we need to redirect IE to
@@ -37,7 +39,7 @@ class RedirectIE9(object):
             return None
 
 
-class RedirectDomain(object):
+class RedirectDomain(deprecation.MiddlewareMixin):
     """
     I want everyone to use the main domain so 302 for "www." subdomain and for
     mlfw.info shortener.
@@ -51,14 +53,14 @@ class RedirectDomain(object):
             return HttpResponsePermanentRedirect(url)
 
 
-class SpacelessHTML(object):
+class SpacelessHTML(deprecation.MiddlewareMixin):
     def process_response(self, request, response):
         if 'text/html' in response['Content-Type']:
             response.content = strip_spaces_between_tags(response.content)
         return response
 
 
-class Style(object):
+class Style(deprecation.MiddlewareMixin):
     def process_request(self, request):
         pony = request.GET.get("best_pony")
         if pony:
@@ -88,13 +90,13 @@ class Style(object):
         return response
 
 
-class NoCache(object):
+class NoCache(deprecation.MiddlewareMixin):
     def process_response(self, request, response):
         add_never_cache_headers(response)
         return response
 
 
-class AllowPieforkMiddleware(object):
+class AllowPieforkMiddleware(deprecation.MiddlewareMixin):
     def process_request(self, request):
         if request.method == 'OPTIONS':
             return HttpResponse()
