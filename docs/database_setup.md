@@ -7,3 +7,13 @@ CREATE USER memes_pony_style WITH PASSWORD '<password>';
 CREATE DATABASE memes_pony_style;
 GRANT ALL ON DATABASE memes_pony_style TO memes_pony_style;
 ```
+
+# create migration files
+```bash
+python manage.py makemigrations
+```
+
+# apply migration files
+```bash
+python manage.py migrate
+```
