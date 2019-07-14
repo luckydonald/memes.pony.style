@@ -19,3 +19,4 @@ South==1.0.2
 sqlparse==0.3.0
 urllib3==1.25.3
 luckydonald-utils==0.76
+django-mustache==1.1.1

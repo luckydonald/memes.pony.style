@@ -1,7 +1,7 @@
-{% load static %}{% load mustache %}{% get_static_prefix as static %}<!DOCTYPE html>
+{% load static %}{% get_static_prefix as static %}<!DOCTYPE html>
 <html lang="en" {% if not_firefox and not debug %}manifest="{{ static }}dictionary.appcache"{% endif %}>
-    <head>{% mustache "meta.mustache" metadata %}
-<!--remove	
+    <head>{% include "meta.mustache" with metadata=metadata %}
+<!--remove
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-24732595-1']);
@@ -13,12 +13,12 @@
   })();
 
 </script>
-remove-->  
+remove-->
     </head>
     <body id="body">
-        <!--[if lte IE 8]><center>Old Internet Explorers may work pretty badly with this site</center><![endif]--> 
-        <div id="top">{% mustache "top.mustache" %}</div>
-        <div id="content">{% mustache content content_data %}</div>
+        <!--[if lte IE 8]><center>Old Internet Explorers may work pretty badly with this site</center><![endif]-->
+        <div id="top">{% include "top.mustache" %}</div>
+        <div id="content">{% include content with content_data=content_data %}</div>
 
         <script type="text/javascript">var static_prefix = '{{ static }}';</script>
         {% if debug %}
@@ -51,6 +51,6 @@ remove-->
         <!--[if gte IE 9> -->
         <script src="{{ static }}app.js?{{ updated }}"></script>
         <!-- <![endif]-->
-        {% endif %} 
+        {% endif %}
     </body>
 </html>

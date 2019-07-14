@@ -9,3 +9,4 @@ requests>=0.11.2
 pystache>=0.5.2
 Pillow>=2.7.0
 luckydonald-utils>=0.76
+django-mustache>=1.1.1

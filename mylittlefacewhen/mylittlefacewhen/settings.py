@@ -79,7 +79,6 @@ TEMPLATE_DIRS = (
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'viewer.templatetags.mustache.Loader',
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
     'django.contrib.auth.context_processors.auth',  # needed for admin
@@ -88,6 +87,19 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATES = [
+    {
+        'BACKEND': 'django_mustache.Mustache',
+        'DIRS': TEMPLATE_DIRS,
+        'APP_DIRS': False,
+        'OPTIONS': {
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+            'partials_dir': 'partials',
+            'file_extension': 'html',
+        }
+    },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',  # needed for admin
         'DIRS': TEMPLATE_DIRS,
