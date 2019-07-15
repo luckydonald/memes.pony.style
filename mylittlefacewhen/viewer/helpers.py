@@ -1,6 +1,9 @@
 from typing import Dict
 
+from somewhere import SUPPORT_EMAIL_ADDRESS
+
 UPDATED = 17
+
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -47,7 +50,9 @@ def get_meta(request, title=None, description=None):
         "static_prefix": settings.STATIC_URL,
         "title": "Pony Reaction Pictures",
         "description": "Express yourself with ponies",
-        "default_image": settings.STATIC_URL + "cheerilee-square-300.png"}
+        "default_image": settings.STATIC_URL + "cheerilee-square-300.png",
+        "support_mail_address": SUPPORT_EMAIL_ADDRESS,
+    }
 
     if title is not None:
         meta["title"] = title

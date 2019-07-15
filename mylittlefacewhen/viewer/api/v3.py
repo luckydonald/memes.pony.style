@@ -11,6 +11,7 @@ from tastypie.resources import ModelResource, Resource
 
 from tagging.models import Tag
 #from viewer import forms
+from somewhere import SUPPORT_EMAIL_ADDRESS
 from viewer import models
 from viewer.api import auths
 from viewer.api.validation import FaceValidation
@@ -34,7 +35,7 @@ class PieforkModelResource(ModelResource):
         data = super(PieforkModelResource, self).build_schema()
         if hasattr(self._meta, "description"):
             data['description'] = self._meta.description
-        data["contact"] = "taivastiuku@mylittlefacewhen.com"
+        data["contact"] = SUPPORT_EMAIL_ADDRESS
         return data
 
 
@@ -43,7 +44,7 @@ class PieforkResource(Resource):
         data = super(PieforkResource, self).build_schema()
         if hasattr(self._meta, "description"):
             data['description'] = self._meta.description
-        data["contact"] = "taivastiuku@mylittlefacewhen.com"
+        data["contact"] = SUPPORT_EMAIL_ADDRESS
         return data
 
 

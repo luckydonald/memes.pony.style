@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 import somewhere as secrets
 from somewhere import POSTGRES_DB_NAME, POSTGRES_DB_USER, POSTGRES_DB_PASS, POSTGRES_DB_HOST, POSTGRES_DB_PORT
+from somewhere import SUPPORT_EMAIL_ADDRESS, SERVER_EMAIL_ADDRESS, EMAIL_SENDER_HOST, EMAIL_SENDER_USER, EMAIL_SENDER_PASS
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -34,7 +35,7 @@ if DEBUG:
     mimetypes.add_type("image/webp", ".webp", True)
 
 ADMINS = (
-    ('Taivastiuku', 'taivastiuku@mylittlefacewhen.com'),
+    ('luckydonald', SUPPORT_EMAIL_ADDRESS),
 )
 
 # Application definition
@@ -211,8 +212,8 @@ FORCE_LOWERCASE_TAGS = True
 LOGIN_URL = "/accounts/login/"
 ACCOUNT_ACTIVATION_DAYS = 7
 
-EMAIL_HOST = 'smtp.webfaction.com'
-EMAIL_HOST_USER = secrets.EMAIL_CONF["username"]
-EMAIL_HOST_PASSWORD = secrets.EMAIL_CONF["password"]
-DEFAULT_FROM_EMAIL = 'server@mylittlefacewhen.com'
-SERVER_EMAIL = 'server@mylittlefacewhen.com'
+EMAIL_HOST = EMAIL_SENDER_HOST
+EMAIL_HOST_USER = EMAIL_SENDER_USER
+EMAIL_HOST_PASSWORD = EMAIL_SENDER_PASS
+SERVER_EMAIL = SERVER_EMAIL_ADDRESS
+DEFAULT_FROM_EMAIL = SERVER_EMAIL_ADDRESS

@@ -20,17 +20,11 @@ assert POSTGRES_DB_HOST is not None  # $POSTGRES_DB_HOST environment variable
 
 POSTGRES_DB_PORT = os.getenv('POSTGRES_DB_PORT', None)
 
+SUPPORT_EMAIL_ADDRESS = os.getenv('SUPPORT_EMAIL_ADDRESS', 'no-reply@example.com')
+SERVER_EMAIL_ADDRESS = os.getenv('SERVER_EMAIL_ADDRESS', 'server@example.com')
+DOMAIN = os.getenv('DOMAIN', 'example.com')
 
-DB_CONF = {
-    "dbname": POSTGRES_DB_NAME,
-    "username": POSTGRES_DB_USER,
-    "password": POSTGRES_DB_PASS,
-    "host": POSTGRES_DB_HOST,
-    "port": POSTGRES_DB_PORT,
-}
+EMAIL_SENDER_HOST = os.getenv('EMAIL_SENDER_HOST', 'no-reply@example.com')
+EMAIL_SENDER_USER = os.getenv('EMAIL_SENDER_USER', 'server@example.com')
+EMAIL_SENDER_PASS = os.getenv('EMAIL_SENDER_PASS', 'server@example.com')
 
-
-EMAIL_CONF = {
-    "username": "email uiser",
-    "password": "asdasdasd",
-}
