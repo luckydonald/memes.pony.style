@@ -10,6 +10,8 @@ from django.db import models
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.mail import send_mail
 
+from somewhere import SERVER_EMAIL_ADDRESS
+
 try:
     import Image
 except:
@@ -668,10 +670,10 @@ class Flag(models.Model):
         s = "Face:\thttp://mlfw.info/f/%s/\nReason:\t%s\nUseragent:\t%s\n" % \
             (str(self.face.id), self.reason, self.user_agent)
         send_mail(
-            "reported! mlfw " + str(self.face.id),
-            s,
-            "server@mylittlefacewhen.com",
-            ADMINMAILS)
+            subject="reported! mlfw " + str(self.face.id),
+            message=s,
+            from_email=SERVER_EMAIL_ADDRESS,
+            recipient_list=ADMINMAILS)
 
         ret = super(Flag, self).save(*args, **kwargs)
         ChangeLog(face=self.face, flag=self).save()
@@ -896,10 +898,10 @@ class Feedback(models.Model):
             s = "Contact:\t%s\nFeedback:\t%s\nTime:\t%s\nUseragent:\t%s\n" % \
                 (self.contact, self.text, str(self.datetime), self.useragent)
             send_mail(
-                "mlfw feedback: " + self.contact,
-                s,
-                "server@mylittlefacewhen.com",
-                ADMINMAILS)
+                subject="mlfw feedback: " + self.contact,
+                message=s,
+                from_email=SERVER_EMAIL_ADDRESS,
+                recipient_list=ADMINMAILS)
             return super(Feedback, self).save(*args, **kwargs)
 
     def __unicode__(self):
