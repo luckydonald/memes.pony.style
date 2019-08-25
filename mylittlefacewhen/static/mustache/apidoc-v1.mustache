@@ -1,5 +1,5 @@
-<p class="text-center">If you have any questions, suggestions or notice any bugs please contact with <a href="mailto:taivastiuku@mylittlefacewhen.com">e-mail</a>.</p>
-<h2 class="text-center">THIS API VERSION IS DEPRECATED PLEASE SEE <a class="navigate" href="/develop/api/v2/">version 2</a></h2> 
+<p class="text-center">If you have any questions, suggestions or notice any bugs please contact with <a href="mailto:{{ support_mail_address }}">e-mail</a>.</p>
+<h2 class="text-center">THIS API VERSION IS DEPRECATED PLEASE SEE <a class="navigate" href="/develop/api/v2/">version 2</a></h2>
 
 <table id="apidoc">
   <tr>
@@ -40,11 +40,11 @@
         <li>order=random</li>
       </ul>
     </td>
-    <td class="explanation">The tags argument should contain a JSON list of tags. Any 1 character tags will be ignored. The search first tries to find all images with exact "tag" AND "another tag" if no hits are found then search tries to find images that have tags that have a substring of "tag" AND "another tag". The order tag is optional and has the default limit of 1. Other queries return all the hits by default (may change in the future).</td> 
+    <td class="explanation">The tags argument should contain a JSON list of tags. Any 1 character tags will be ignored. The search first tries to find all images with exact "tag" AND "another tag" if no hits are found then search tries to find images that have tags that have a substring of "tag" AND "another tag". The order tag is optional and has the default limit of 1. Other queries return all the hits by default (may change in the future).</td>
     <td>
       <ul>
         <li><a rel="nofollow" href='/api/search/?tags=["twilight sparkle", "no"]'>/api/search/?tags=["twilight sparkle", "no"]</a></li>
-        <li><a rel="nofollow" href='/api/search/?tags=["twi", "no"]'>/api/search/?tags=["twi", "no"]</a></li> 
+        <li><a rel="nofollow" href='/api/search/?tags=["twi", "no"]'>/api/search/?tags=["twi", "no"]</a></li>
       </td>
     </td>
   </tr>

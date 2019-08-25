@@ -1,9 +1,9 @@
 # MyLittleFaceWhen
 MyLittleFaceWhen is a simple image sharing web-application. It contains a 
 backend with rest api interface and a javascript frontend. Developed for fun
-and learning.
+and learning. Revived for ponies and memes.
 
-Used to power http://mylittlefacewhen.com/
+Used to power https://mylittlefacewhen.com/, will now power https://memes.pony.style
 
 ## Technologies
 List of most important packages that are used.
