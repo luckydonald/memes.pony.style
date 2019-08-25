@@ -1,5 +1,5 @@
-# MyLittleFaceWhen
-MyLittleFaceWhen is a simple image sharing web-application. It contains a 
+# memes.pony.style
+memes.pony.style is a simple image sharing web-application. It contains a 
 backend with rest api interface and a javascript frontend. Developed for fun
 and learning. Revived for ponies and memes.
 
@@ -18,6 +18,8 @@ List of most important packages that are used.
 - jQuery
 - CoffeeScript
 - sass
+
+- Much digital duct-tape
 
 ## Requirements
 
